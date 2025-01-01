@@ -4,6 +4,9 @@ const AppointmentSchema = require("./appointment.model");
 const ReviewSchema = require("./review.model");
 const ParameterSchema = require("./parameters.model");
 const ParameterLinkSchema = require("./parameter_link.model");
+const FinalReviewSchema = require("./finalReview.model");
+const ReviewInSightsSchema = require("./ReviewInSights.model");
+const OrderSchema = require("./order.model");
 
 const sequelize = new Sequelize(
     config.get("testDBLocal").get("database"),
@@ -18,7 +21,10 @@ const sequelize = new Sequelize(
 const Appointment = sequelize.define("appointments", AppointmentSchema)
 const Review = sequelize.define("reviews", ReviewSchema)
 const Parameter = sequelize.define("parameters", ParameterSchema)
-const ParameterLink = sequelize.define("reviews", ParameterLinkSchema)
+const ParameterLink = sequelize.define("parameterLink", ParameterLinkSchema)
+const FinalReview = sequelize.define("finalReview", FinalReviewSchema)
+const ReviewInsight = sequelize.define("reviewInsights", ReviewInSightsSchema)
+const Order = sequelize.define("orders", OrderSchema)
 
 
 sequelize.authenticate()
@@ -41,5 +47,8 @@ module.exports = {
     Appointment,
     Review,
     Parameter,
-    ParameterLink
+    ParameterLink,
+    FinalReview,
+    ReviewInsight,
+    Order
 }
