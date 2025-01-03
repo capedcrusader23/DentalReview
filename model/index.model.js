@@ -26,13 +26,12 @@ const FinalReview = sequelize.define("finalReview", FinalReviewSchema)
 const ReviewInsight = sequelize.define("reviewInsights", ReviewInSightsSchema)
 const Order = sequelize.define("orders", OrderSchema)
 
-
 sequelize.authenticate()
     .then(() => {
         console.log('Connection has been established successfully.');
         return sequelize.sync({
-            // alter: true,
-            // logging: true,
+            alter: true,
+            logging: true,
         })
     })
     .then(() => {

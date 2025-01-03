@@ -1,17 +1,45 @@
 const { Op } = require('sequelize');
-const {Review, Appointment, ParameterLink, Parameter, ReviewInsight} = require("../model/index.model");
+const {Review, Appointment, ParameterLink, Parameter, ReviewInsight, FinalReview} = require("../model/index.model");
 const { structureResponse } = require('../utils/common.utils');
 
 class reviewController{
 
       async checkReview(req,res){
         try{
-            let reviews = await Appointment.findAll({
+            let reviews = await Review.findAll({
                 where: {
                     appointmentId: req.body.appointmentId
                 }
             })
-            let response = structureResponse(reviews, 1, "Reviews Fetched successfully");
+            console.log(reviews);
+            let response ;
+            if(reviews.length > 0 ){
+                let reviewInsights = await ReviewInsight.findOne({
+                    where:{
+                        appointmentId: req.body.appointmentId
+                    },
+                });
+                console.log("REVIEW INSIGHTS", reviewInsights)
+                let appointment = await Appointment.findOne({
+                    where:{
+                        id: req.body.appointmentId
+                    }
+                })
+                let finalSavedReview = await FinalReview.findOne({
+                    where:{
+                        appointmentId: req.body.appointmentId
+                    },
+                })
+                console.log("FINAL SAVED REVIEW", finalSavedReview)
+                let finalResponse = {
+                    suggestivePricing: reviewInsights.dataValues.suggestivePricing,
+                    rating: finalSavedReview.dataValues.finalRating,
+                    pricing:appointment.dataValues.pricing
+                }
+                response = structureResponse(finalResponse, 1, "Reviews Fetched successfully");
+            } else{
+                response = structureResponse(reviews, 1, "Reviews Fetched successfully");
+            }
             return res.status(200).json({
                 message: response.headers.message,
                 data:response.body,
@@ -66,43 +94,20 @@ class reviewController{
       async saveReviewRatings(req,res) {
         try
         {
-            let totalReviews = req.body.ratings;
-            let totalRating = 0;
+            let savedReviews = []
             for(let i=0;i<req.body.ratings.length;i++) {
-                totalRating+=req.body.ratings[i].value;
                 let savedReview = await Review.create({
                     appointmentId:req.body.appointmentId,
                     parameterId: req.body.ratings[i].parameterId,
                     rating: req.body.ratings[i].value,
                 })
+                savedReviews.push(savedReview);
             }
             console.log("Saved the ratings for appointmentID ",req.body.appointmentId)
-            let finalRating = totalRating/totalReviews;
 
-            if(finalRating>0 && finalRating < 2){
-                suggestPricing = 0;
-            } else if(finalRating>=2 && finalRating< 4){
-                suggestPricing = 1;
-            } else{
-                suggestPricing = 2;
-            }
-            let reviewInsights = await ReviewInsight.create({
-                appointmentId: req.body.appointmentId,
-                suggestivePricing: suggestPricing,
-                optedPricing: -1
-            })
-            let appointment = await Appointment.findOne({
-                where:{
-                    id: req.body.appointmentId
-                }
-            })
-            console.log("Saved suggestive pricing ",reviewInsights)
-            let finalResponse = {
-                suggestivePricing: suggestPricing,
-                rating: finalRating,
-                pricing:appointment.dataValues.pricing
-            }
-            let response = structureResponse(finalResponse, 1, "Reviews Parameter Fetched successfully");
+            let ans = await this.fetchReviewAndSuggestivePricing(savedReviews,req.body.appointmentId)
+            
+            let response = structureResponse(ans, 1, "Reviews Parameter Fetched successfully");
             return res.status(200).json({
                 message: response.headers.message,
                 data:response.body,
@@ -115,6 +120,46 @@ class reviewController{
                 data:response.body,
             })
         }
+      }
+
+      async fetchReviewAndSuggestivePricing(reviews,appointmentId){
+        console.log(reviews);
+        let totalReviews = reviews.length;
+        let totalRating = 0;
+        let suggestPricing = 0;
+        for(let i=0;i<reviews.length;i++){
+            totalRating+=reviews[i].dataValues.rating
+        }
+        let finalRating = totalRating/totalReviews;
+        if(finalRating>0 && finalRating < 2){
+            suggestPricing = 0;
+        } else if(finalRating>=2 && finalRating< 4){
+            suggestPricing = 1;
+        } else{
+            suggestPricing = 2;
+        }
+        let reviewInsights = await ReviewInsight.create({
+            appointmentId: appointmentId,
+            suggestivePricing: suggestPricing,
+            optedPricing: -1
+        })
+
+        let finalSavedReview = await FinalReview.create({
+            appointmentId: appointmentId,
+            finalRating: finalRating
+        })
+        let appointment = await Appointment.findOne({
+            where:{
+                id: appointmentId
+            }
+        })
+        console.log("Saved suggestive pricing ",reviewInsights)
+        let finalResponse = {
+            suggestivePricing: suggestPricing,
+            rating: finalRating,
+            pricing:appointment.dataValues.pricing
+        }
+        return finalResponse;
       }
 }
 

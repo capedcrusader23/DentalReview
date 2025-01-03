@@ -15,9 +15,6 @@ const Appointment = {
     pricing: {
         type: DataTypes.STRING,
     },
-    isPaid:{
-        type: DataTypes.BOOLEAN,
-    },
     phoneNo:{
         type: DataTypes.STRING,
     }
