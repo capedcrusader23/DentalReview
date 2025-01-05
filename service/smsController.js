@@ -21,7 +21,7 @@ class smsController{
             let createdAppointment = await Appointment.create({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
-                pricing: req.body.pricing,
+                pricing: JSON.stringify(req.body.pricing.to),
                 // pricing: JSON.stringify(req.body.pricing),
                 isPaid: false,
                 phoneNo: req.body.phoneNo,
