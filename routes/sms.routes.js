@@ -10,5 +10,9 @@ router.post('/sendReviewRequest', (req,res)=>{
     smsController.sendSms(req,res);
 });
 
+router.get('/getAppointments',(req,res)=>{
+    smsController.getAppointments(req,res)
+})
+
 
 module.exports = router;

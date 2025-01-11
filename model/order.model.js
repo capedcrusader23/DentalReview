@@ -15,8 +15,11 @@ const Order = {
     price: {
         type: DataTypes.STRING,
     },
-    razorpayId:{
+    razorpayOrderId:{
         type: DataTypes.STRING,
+    },
+    receiptUrl:{
+        type:DataTypes.TEXT,
     }
 }
 

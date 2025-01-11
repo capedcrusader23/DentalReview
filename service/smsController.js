@@ -2,13 +2,8 @@ const { Op } = require('sequelize');
 const twilio = require('twilio');
 const config = require('config');
 const accountSid = config.get("twillio").get("accountId");  // from your Twilio console
-<<<<<<< HEAD
-const authToken = config.get("twillio").get("authToken");     // from your Twilio console
-const { Appointment, Review } = require("../model/index.model");
-=======
 const authToken  = config.get("twillio").get("authToken");     // from your Twilio console
 const {Appointment, Review, Parameter, ParameterLink} = require("../model/index.model");
->>>>>>> 58f2c04 (save active parameters)
 const { firstName, lastName, isPaid, phoneNo } = require('../model/appointment.model');
 const { timestamp } = require('../model/parameters.model');
 const { appointmentId } = require('../model/review.model');
@@ -32,7 +27,22 @@ class smsController {
                 phoneNo: req.body.phoneNo,
                 timestamp: new Date(),
             });
-            console.log("Record created with id ", createdAppointment.dataValues.id)
+            let parameters = await Parameter.findAll({
+                where:{
+                    isActive:true,
+                }
+            });
+
+            for(let i=0;i<parameters.length;i++){
+                let parameterLink ={
+                    appointmentId: createdAppointment.dataValues.id,
+                    parameterId: parameters[i].dataValues.id,
+                }
+                await ParameterLink.create({
+                    ...parameterLink
+                })
+            }
+            // console.log("Record created with id ",createdAppointment.dataValues.id)
             // const message = await client.messages.create({
             //     body: "Thank you for choosing us. Please go through this link to complete payment: "+"https://dentalcare.com/payment/"+createdAppointment.dataValues.id,
             //     from: "+12314473531",  
