@@ -2,8 +2,13 @@ const { Op } = require('sequelize');
 const twilio = require('twilio');
 const config = require('config');
 const accountSid = config.get("twillio").get("accountId");  // from your Twilio console
+<<<<<<< HEAD
 const authToken = config.get("twillio").get("authToken");     // from your Twilio console
 const { Appointment, Review } = require("../model/index.model");
+=======
+const authToken  = config.get("twillio").get("authToken");     // from your Twilio console
+const {Appointment, Review, Parameter, ParameterLink} = require("../model/index.model");
+>>>>>>> 58f2c04 (save active parameters)
 const { firstName, lastName, isPaid, phoneNo } = require('../model/appointment.model');
 const { timestamp } = require('../model/parameters.model');
 const { appointmentId } = require('../model/review.model');
@@ -21,8 +26,8 @@ class smsController {
             let createdAppointment = await Appointment.create({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
-                // pricing: req.body.pricing,
                 pricing: JSON.stringify(req.body.pricing),
+                // pricing: JSON.stringify(req.body.pricing),
                 isPaid: false,
                 phoneNo: req.body.phoneNo,
                 timestamp: new Date(),

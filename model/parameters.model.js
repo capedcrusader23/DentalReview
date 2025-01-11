@@ -15,6 +15,9 @@ const Parameters = {
     timestamp: {
         type: DataTypes.DATE,
     },
+    isActive : {
+        type: DataTypes.BOOLEAN,
+    }
 }
 
 module.exports = Parameters
