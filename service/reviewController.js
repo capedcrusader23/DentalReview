@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { Review, Appointment, ParameterLink, Parameter, ReviewInsight, FinalReview } = require("../model/index.model");
+const { Review, Appointment, ParameterLink, Parameter, ReviewInsight, FinalReview, Order } = require("../model/index.model");
 const { structureResponse } = require('../utils/common.utils');
 
 class reviewController {
@@ -11,33 +11,66 @@ class reviewController {
                     appointmentId: req.body.appointmentId
                 }
             })
+            console.log()
             let response;
             if (reviews.length > 0) {
-                let reviewInsights = await ReviewInsight.findOne({
-                    where: {
-                        appointmentId: req.body.appointmentId
-                    },
-                });
-                console.log("REVIEW INSIGHTS", reviewInsights)
-                let appointment = await Appointment.findOne({
-                    where: {
-                        id: req.body.appointmentId
+                let completedOrder = await Order.findOne({
+                    where:{
+                        appointmentId: req.body.appointmentId,
+                        status:"SUCCESS", 
                     }
-                })
-                let finalSavedReview = await FinalReview.findOne({
-                    where: {
-                        appointmentId: req.body.appointmentId
-                    },
-                })
-                console.log("FINAL SAVED REVIEW", finalSavedReview)
-                let finalResponse = {
-                    suggestivePricing: reviewInsights.dataValues.suggestivePricing,
-                    rating: finalSavedReview.dataValues.finalRating,
-                    pricing: appointment.dataValues.pricing,
-                    firstName: appointment.dataValues.firstName,
-                    lastName: appointment.dataValues.lastName
-                }
-                response = structureResponse(finalResponse, 1, "Reviews Fetched successfully");
+                });
+                console.log(completedOrder)
+                if(completedOrder!=null){
+                    let reviewInsights = await ReviewInsight.findOne({
+                        where: {
+                            appointmentId: req.body.appointmentId
+                        },
+                    });
+
+                    
+
+                    let appointment = await Appointment.findOne({
+                        where: {
+                            id: req.body.appointmentId
+                        }
+                    })
+
+                    let finalResponse = {
+                        firstName: appointment.dataValues.firstName,
+                        lastName: appointment.dataValues.lastName,
+                        pricing: appointment.dataValues.pricing,
+                        optedPricing: reviewInsights.dataValues.optedPricing,
+                        success: true,
+                    }
+                    response = structureResponse(finalResponse, 1, "You have already paid for this booking. Here is your reciept");
+                } else{
+                    let reviewInsights = await ReviewInsight.findOne({
+                        where: {
+                            appointmentId: req.body.appointmentId
+                        },
+                    });
+                    console.log("REVIEW INSIGHTS", reviewInsights)
+                    let appointment = await Appointment.findOne({
+                        where: {
+                            id: req.body.appointmentId
+                        }
+                    })
+                    let finalSavedReview = await FinalReview.findOne({
+                        where: {
+                            appointmentId: req.body.appointmentId
+                        },
+                    })
+                    console.log("FINAL SAVED REVIEW", finalSavedReview)
+                    let finalResponse = {
+                        suggestivePricing: reviewInsights.dataValues.suggestivePricing,
+                        rating: finalSavedReview.dataValues.finalRating,
+                        pricing: appointment.dataValues.pricing,
+                        firstName: appointment.dataValues.firstName,
+                        lastName: appointment.dataValues.lastName
+                    }
+                    response = structureResponse(finalResponse, 1, "Reviews Fetched successfully");
+                }    
             } else {
                 response = structureResponse(reviews, 1, "Reviews Fetched successfully");
             }
