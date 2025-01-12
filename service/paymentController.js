@@ -42,6 +42,7 @@ class paymentController{
               };
 
             const order = await razorpayInstance.orders.create(options);
+            console.log(order)
 
             let systemOrder = await Order.create({
                 appointmentId: req.body.appointmentId,

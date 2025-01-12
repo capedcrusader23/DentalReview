@@ -42,7 +42,7 @@ class smsController {
                     ...parameterLink
                 })
             }
-            // console.log("Record created with id ",createdAppointment.dataValues.id)
+            console.log("Record created with id ",createdAppointment.dataValues.id)
             // const message = await client.messages.create({
             //     body: "Thank you for choosing us. Please go through this link to complete payment: "+"https://dentalcare.com/payment/"+createdAppointment.dataValues.id,
             //     from: "+12314473531",  

@@ -30,13 +30,13 @@ class InsightController{
                         for(let j=0;j<pricing.length;j++){
                             console.log("Pricing is",pricing[j])
                             if(reviewInsights.dataValues.optedPricing==0) {
-                                finalPricing+=pricing[j].pricing.basic
+                                finalPricing+=(pricing[j].pricing.basic)*pricing[j].quantity
                             } else if(reviewInsights.dataValues.optedPricing==1){
                                 console.log(pricing[j].pricing.standard)
-                                finalPricing+=pricing[j].pricing.standard
+                                finalPricing+=(pricing[j].pricing.standard)*pricing[j].quantity
                             }
                             else if(reviewInsights.dataValues.optedPricing==2){
-                                finalPricing+=pricing[j].pricing.premium
+                                finalPricing+=(pricing[j].pricing.premium)*pricing[j].quantity
                             }
                         }
                     }
