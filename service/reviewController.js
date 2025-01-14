@@ -28,8 +28,6 @@ class reviewController {
                         },
                     });
 
-                    
-
                     let appointment = await Appointment.findOne({
                         where: {
                             id: req.body.appointmentId
@@ -137,7 +135,7 @@ class reviewController {
             }
             console.log("Saved the ratings for appointmentID ", req.body.appointmentId)
 
-            let ans = await this.fetchReviewAndSuggestivePricing(savedReviews, req.body.appointmentId)
+            let ans = await this.fetchReviewAndSuggestivePricing(savedReviews, req.body.appointmentId,req.body.feedback)
 
             let response = structureResponse(ans, 1, "Reviews Parameter Fetched successfully");
             return res.status(200).json({
@@ -154,7 +152,7 @@ class reviewController {
         }
     }
 
-    async fetchReviewAndSuggestivePricing(reviews, appointmentId) {
+    async fetchReviewAndSuggestivePricing(reviews, appointmentId, feedback) {
         console.log(reviews);
         let totalReviews = reviews.length;
         let totalRating = 0;
@@ -178,7 +176,8 @@ class reviewController {
 
         let finalSavedReview = await FinalReview.create({
             appointmentId: appointmentId,
-            finalRating: finalRating
+            finalRating: finalRating,
+            feedback: feedback,
         })
         let appointment = await Appointment.findOne({
             where: {

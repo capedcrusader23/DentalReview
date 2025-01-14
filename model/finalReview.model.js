@@ -12,6 +12,9 @@ const FinalReview = {
     finalRating:{
         type: DataTypes.FLOAT,
         defaultValue: 0,
+    },
+    feedback:{
+        type:DataTypes.TEXT
     }
 }
 
