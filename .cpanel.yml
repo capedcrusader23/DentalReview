@@ -2,13 +2,19 @@
 deployment:
   tasks:
     - export DEPLOYPATH=/home/adminbhavin/public_html/
-    - /bin/cp -R service $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/cp -R loaders $DEPLOYPATH
+    - /bin/cp -R middleware $DEPLOYPATH
     - /bin/cp -R model $DEPLOYPATH
+    - /bin/cp -R routes $DEPLOYPATH
+    - /bin/cp -R service $DEPLOYPATH
     - /bin/cp -R utils $DEPLOYPATH
     - /bin/cp -R validation $DEPLOYPATH
+    - /bin/cp index.js $DEPLOYPATH
     - /bin/cp package.json $DEPLOYPATH
     - /bin/cp package-lock.json $DEPLOYPATH
-    - /bin/cp config/* $DEPLOYPATH/config/
     # Install dependencies
     - cd $DEPLOYPATH
-    - /usr/local/bin/npm install --production 
+    - /usr/local/bin/npm install --production
+    - /usr/local/bin/npm run dev
+    
