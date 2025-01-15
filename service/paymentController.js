@@ -5,9 +5,13 @@ const initiatePaymentValidation = require('../validation/InitiatePaymentValidati
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 
+const config = require('config');
+const id = config.get("razorpay").get("id");  
+const secret  = config.get("razorpay").get("secret");    
+
 const razorpayInstance = new Razorpay({
-    key_id: "rzp_test_jx3qUdaZ3DEefb",  // Replace with your Razorpay key_id
-    key_secret: "FGn2s9FZHbXrSsc2Cjnn36uw",  // Replace with your Razorpay key_secret
+    key_id: id,  // Replace with your Razorpay key_id
+    key_secret: secret,  // Replace with your Razorpay key_secret
   });
 
 
