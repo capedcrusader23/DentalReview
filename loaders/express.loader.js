@@ -14,19 +14,19 @@ class ExpressLoader {
         app.use(bodyParser.json());
         app.use(bodyParser.urlencoded({ extended: false }));
 
-        app.use(
-            cors({
-                origin: [
-                    'http://localhost:5173',
-                    'http://localhost:3000',
-                    'https://localhost:3000',
-                    'https://getValu3.com:5173',
-                    'https://getValu3.com',
-                ],
-                credentials: true,
-                preflightContinue: false,
-            }),
-        );
+        // app.use(
+        //     cors({
+        //         origin: [
+        //             'http://localhost:5173',
+        //             'http://localhost:3000',
+        //             'https://localhost:3000',
+        //             'https://getValu3.com:5173',
+        //             'https://getValu3.com',
+        //         ],
+        //         credentials: true,
+        //         preflightContinue: false,
+        //     }),
+        // );
         app.use(
             session({
                 store: new FileStore({ secret: 'prototype' }),
