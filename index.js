@@ -9,7 +9,7 @@ const app = ExpressLoader.init();
 // Enable pre-flight requests for all routes
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', 'https://getvalu3.com');
-  res.header('Access-Control-Allow-Credentials', 'false');
+  res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
