@@ -23,8 +23,10 @@ app.use(function (req, res, next) {
 
 // Apply CORS globally
 app.use(cors({
-  origin: 'https://getvalu3.com',
-  credentials: false
+  origin: '*',  // For testing only! Change back to 'https://getvalu3.com' in production
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization']
 }));
 
 const { RoutesLoader } = require('./loaders/routes.loader');
