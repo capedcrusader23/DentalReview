@@ -20,6 +20,8 @@ class ExpressLoader {
                     'http://localhost:5173',
                     'http://localhost:3000',
                     'https://localhost:3000',
+                    'https://getValu3.com:5173',
+                    'https://getValu3.com',
                 ],
                 credentials: true,
                 preflightContinue: false,

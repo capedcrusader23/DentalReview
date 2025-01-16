@@ -44,8 +44,8 @@ class smsController {
             }
             console.log("Record created with id ", createdAppointment.dataValues.id)
             const message = await client.messages.create({
-                body: "Thank you for choosing us. Please go through this link to complete payment: " + "https://dentalcare.com/payment/" + createdAppointment.dataValues.id,
-                from: "+12314473531",
+                body: "Thank you for choosing us. Please go through this link to complete payment: " + "https://getValu3.com/payment/" + createdAppointment.dataValues.id,
+                from: "+16205428380",
                 to: "+91" + req.body.phoneNo
             });
             console.log("Message sent to number " + phoneNo + "with twillio id" + message.sid);
