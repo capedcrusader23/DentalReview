@@ -9,11 +9,11 @@ const ReviewInSightsSchema = require("./ReviewInSights.model");
 const OrderSchema = require("./order.model");
 
 const sequelize = new Sequelize(
-    config.get("testDBLocal").get("database"),
-    config.get("testDBLocal").get("user"),
-    config.get("testDBLocal").get("password"),
+    process.env.DB_NAME,
+    process.env.DB_USER,
+    process.env.DB_PASSWORD,
     {
-        host: config.get("testDBLocal").get("host"),
+        host: process.env.DB_HOST,
         dialect: "mysql",
     },
 );

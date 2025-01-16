@@ -5,7 +5,7 @@ const { ErrorCodes } = require("../errorCodes.utils");
 class ValidationException extends Error {
     constructor(code, message, data) {
         super(message);
-        if (config.get("config").get("env") === "dev") this.message = `Validation Error: ${message}`;
+        if process.env.ENV === "dev") this.message = `Validation Error: ${message}`;
         else this.message = message;
         this.name = "Validation Error";
         this.code = code;
@@ -17,7 +17,7 @@ class ValidationException extends Error {
 
 class InvalidPropertiesException extends ValidationException {
     constructor(message) {
-        super(ErrorCodes.InvalidPropertiesException, message,message);
+        super(ErrorCodes.InvalidPropertiesException, message, message);
     }
 }
 

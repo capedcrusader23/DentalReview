@@ -1,9 +1,9 @@
 const { Op } = require('sequelize');
 const twilio = require('twilio');
 const config = require('config');
-const accountSid = config.get("twillio").get("accountId");  // from your Twilio console
-const authToken  = config.get("twillio").get("authToken");     // from your Twilio console
-const {Appointment, Review, Parameter, ParameterLink} = require("../model/index.model");
+const accountSid = process.env.TWILLIO_ACCOUNT_ID;  // from your Twilio console
+const authToken = process.env.TWILLIO_AUTH_TOKEN;     // from your Twilio console
+const { Appointment, Review, Parameter, ParameterLink } = require("../model/index.model");
 const { firstName, lastName, isPaid, phoneNo } = require('../model/appointment.model');
 const { timestamp } = require('../model/parameters.model');
 const { appointmentId } = require('../model/review.model');
@@ -28,13 +28,13 @@ class smsController {
                 timestamp: new Date(),
             });
             let parameters = await Parameter.findAll({
-                where:{
-                    isActive:true,
+                where: {
+                    isActive: true,
                 }
             });
 
-            for(let i=0;i<parameters.length;i++){
-                let parameterLink ={
+            for (let i = 0; i < parameters.length; i++) {
+                let parameterLink = {
                     appointmentId: createdAppointment.dataValues.id,
                     parameterId: parameters[i].dataValues.id,
                 }
@@ -42,13 +42,13 @@ class smsController {
                     ...parameterLink
                 })
             }
-            console.log("Record created with id ",createdAppointment.dataValues.id)
+            console.log("Record created with id ", createdAppointment.dataValues.id)
             const message = await client.messages.create({
-                body: "Thank you for choosing us. Please go through this link to complete payment: "+"https://dentalcare.com/payment/"+createdAppointment.dataValues.id,
-                from: "+12314473531",  
-                to: "+91"+req.body.phoneNo       
-              });
-            console.log("Message sent to number "+ phoneNo+"with twillio id"+message.sid);
+                body: "Thank you for choosing us. Please go through this link to complete payment: " + "https://dentalcare.com/payment/" + createdAppointment.dataValues.id,
+                from: "+12314473531",
+                to: "+91" + req.body.phoneNo
+            });
+            console.log("Message sent to number " + phoneNo + "with twillio id" + message.sid);
             let response = structureResponse(req.body, 1, "Sms Sent Successfully");
             console.log(response)
             return res.status(200).json({
