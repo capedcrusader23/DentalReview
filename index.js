@@ -3,16 +3,8 @@ const cors = require('cors');
 
 require('dotenv').config();
 
-// Add this before your CORS configuration
-app.use((req, res, next) => {
-  console.log('Incoming request:', {
-    method: req.method,
-    path: req.path,
-    origin: req.headers.origin,
-    headers: req.headers
-  });
-  next();
-});
+const { ExpressLoader } = require('./loaders/express.loader');
+const app = ExpressLoader.init();
 
 // CORS options
 const corsOptions = {
@@ -32,11 +24,9 @@ app.use(cors(corsOptions));
 // Handle OPTIONS preflight for all routes
 app.options('*', cors(corsOptions));
 
-const { ExpressLoader } = require('./loaders/express.loader');
 const { RoutesLoader } = require('./loaders/routes.loader');
 const { MiddlewareLoader } = require('./loaders/middleware.loader');
 // load express
-const app = ExpressLoader.init();
 
 // init routes
 const version = "v1";
