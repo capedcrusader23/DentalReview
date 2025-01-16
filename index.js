@@ -10,9 +10,10 @@ const app = ExpressLoader.init();
 
 // Configure CORS
 app.use(cors({
-  origin: '*', // Be more restrictive in production
+  origin: 'https://getvalu3.com',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 // init routes
