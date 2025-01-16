@@ -1,4 +1,5 @@
 const config = require('config');
+const cors = require('cors');
 
 require('dotenv').config();
 const { ExpressLoader } = require('./loaders/express.loader');
@@ -6,6 +7,13 @@ const { RoutesLoader } = require('./loaders/routes.loader');
 const { MiddlewareLoader } = require('./loaders/middleware.loader');
 // load express
 const app = ExpressLoader.init();
+
+// Configure CORS
+app.use(cors({
+  origin: '*', // Be more restrictive in production
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 // init routes
 const version = "v1";
