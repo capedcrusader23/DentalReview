@@ -8,7 +8,7 @@ function errorMiddleware(err, req, res, next) {
     }
     let { message, code, error, status, data, stack } = err;
 
-    if process.env.ENV === "dev") {
+    if (process.env.ENV === "dev") {
         console.log(`[Exception] ${error}, [Code] ${code}`);
         console.log(`[Error] ${message}`);
         console.log(`[Stack] ${stack}`);

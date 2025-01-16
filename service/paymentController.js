@@ -9,6 +9,8 @@ const config = require('config');
 const id = process.env.RAZORPAY_ID;
 const secret = process.env.RAZORPAY_SECRET;
 
+console.log({ id, secret })
+
 const razorpayInstance = new Razorpay({
     key_id: id,  // Replace with your Razorpay key_id
     key_secret: secret,  // Replace with your Razorpay key_secret

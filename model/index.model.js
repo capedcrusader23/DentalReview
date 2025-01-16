@@ -7,7 +7,7 @@ const ParameterLinkSchema = require("./parameter_link.model");
 const FinalReviewSchema = require("./finalReview.model");
 const ReviewInSightsSchema = require("./ReviewInSights.model");
 const OrderSchema = require("./order.model");
-
+console.log({ db_name: process.env.DB_NAME, db_user: process.env.DB_USER, db_password: process.env.DB_PASSWORD, db_host: process.env.DB_HOST })
 const sequelize = new Sequelize(
     process.env.DB_NAME,
     process.env.DB_USER,
