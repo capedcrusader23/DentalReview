@@ -139,7 +139,7 @@ class reviewController {
             let savedReviews = []
             let currentAppointment = await Appointment.findOne({
                 where:{
-                    shortId: req.params.appointmentId
+                    shortId: req.body.appointmentId
                 }
             })
             let appointmentId = currentAppointment.dataValues.id;
