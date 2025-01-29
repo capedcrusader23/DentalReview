@@ -23,7 +23,7 @@ class paymentController {
             console.log(req.body)
             let validation = new initiatePaymentValidation(req.body);
             validation.validate();
-            let appointment = Appointment.findOne({
+            let appointment = await Appointment.findOne({
                 where: {
                     shortId: req.body.appointmentId
                 }
