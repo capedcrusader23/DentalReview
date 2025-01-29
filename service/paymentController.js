@@ -25,7 +25,7 @@ class paymentController {
             validation.validate();
             let appointment = Appointment.findOne({
                 where: {
-                    id: req.body.appointmentId
+                    shortId: req.body.appointmentId
                 }
             })
             if (appointment == null) {
@@ -34,7 +34,7 @@ class paymentController {
             let reviewInsight = await ReviewInsight.update(
                 { optedPricing: req.body.optedPricing }, {
                 where: {
-                    appointmentId: req.body.appointmentId
+                    appointmentId: appointment.dataValues.id
                 }
             })
             console.log("Saved opted pricing", reviewInsight)
@@ -51,7 +51,7 @@ class paymentController {
             console.log(order)
 
             let systemOrder = await Order.create({
-                appointmentId: req.body.appointmentId,
+                appointmentId: appointment.dataValues.id,
                 status: "CREATED",
                 price: req.body.amount,
                 razorpayOrderId: order.id
@@ -98,12 +98,12 @@ class paymentController {
 
                     let appointment = await Appointment.findOne({
                         where: {
-                            id: req.body.appointmentId
+                            shortId: req.body.appointmentId
                         }
                     })
                     let reviewInsight = await ReviewInsight.findOne({
                         where: {
-                            appointmentId: req.body.appointmentId,
+                            appointmentId: appointment.dataValues.id,
                         }
                     })
 
