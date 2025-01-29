@@ -137,17 +137,23 @@ class reviewController {
     async saveReviewRatings(req, res) {
         try {
             let savedReviews = []
+            let currentAppointment = await Appointment.findOne({
+                where:{
+                    shortId: req.params.appointmentId
+                }
+            })
+            let appointmentId = currentAppointment.dataValues.id;
             for (let i = 0; i < req.body.ratings.length; i++) {
                 let savedReview = await Review.create({
-                    appointmentId: req.body.appointmentId,
+                    appointmentId: appointmentId,
                     parameterId: req.body.ratings[i].parameterId,
                     rating: req.body.ratings[i].value,
                 })
                 savedReviews.push(savedReview);
             }
-            console.log("Saved the ratings for appointmentID ", req.body.appointmentId)
+            console.log("Saved the ratings for appointmentID ", appointmentId)
 
-            let ans = await this.fetchReviewAndSuggestivePricing(savedReviews, req.body.appointmentId,req.body.feedback)
+            let ans = await this.fetchReviewAndSuggestivePricing(savedReviews, appointmentId,req.body.feedback)
 
             let response = structureResponse(ans, 1, "Reviews Parameter Fetched successfully");
             return res.status(200).json({
