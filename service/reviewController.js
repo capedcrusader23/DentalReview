@@ -6,9 +6,15 @@ class reviewController {
 
     async checkReview(req, res) {
         try {
+            let currentAppointment = await Appointment.findOne({
+                where:{
+                    shortId: req.body.appointmentId
+                }
+            })
+            let appointmentId = currentAppointment.dataValues.id;
             let reviews = await Review.findAll({
                 where: {
-                    appointmentId: req.body.appointmentId
+                    appointmentId: appointmentId
                 }
             })
             console.log()
@@ -16,7 +22,7 @@ class reviewController {
             if (reviews.length > 0) {
                 let completedOrder = await Order.findOne({
                     where:{
-                        appointmentId: req.body.appointmentId,
+                        appointmentId: appointmentId,
                         status:"SUCCESS", 
                     }
                 });
@@ -24,13 +30,13 @@ class reviewController {
                 if(completedOrder!=null){
                     let reviewInsights = await ReviewInsight.findOne({
                         where: {
-                            appointmentId: req.body.appointmentId
+                            appointmentId: appointmentId
                         },
                     });
 
                     let appointment = await Appointment.findOne({
                         where: {
-                            id: req.body.appointmentId
+                            id: appointmentId
                         }
                     })
 
@@ -45,18 +51,18 @@ class reviewController {
                 } else{
                     let reviewInsights = await ReviewInsight.findOne({
                         where: {
-                            appointmentId: req.body.appointmentId
+                            appointmentId: appointmentId
                         },
                     });
                     console.log("REVIEW INSIGHTS", reviewInsights)
                     let appointment = await Appointment.findOne({
                         where: {
-                            id: req.body.appointmentId
+                            id: appointmentId
                         }
                     })
                     let finalSavedReview = await FinalReview.findOne({
                         where: {
-                            appointmentId: req.body.appointmentId
+                            appointmentId: appointmentId
                         },
                     })
                     console.log("FINAL SAVED REVIEW", finalSavedReview)
@@ -89,9 +95,15 @@ class reviewController {
     async getReviewParameters(req, res) {
         try {
             let allParameters = [];
+            let currentAppointment = await Appointment.findOne({
+                where:{
+                    shortId: req.params.appointmentId
+                }
+            })
+            let appointmentId = currentAppointment.dataValues.id;
             let parametersLink = await ParameterLink.findAll({
                 where: {
-                    appointmentId: req.params.appointmentId
+                    appointmentId: appointmentId
                 }
             });
             for (let i = 0; i < parametersLink.length; i++) {
@@ -103,7 +115,7 @@ class reviewController {
                 allParameters.push({
                     parameterId: parametersLink[i].dataValues.parameterId,
                     parameterName: parameter.dataValues.paramterName,
-                    appointmentId: req.params.appointmentId,
+                    appointmentId: appointmentId,
                     description: parameter.dataValues.description
                 });
             }

@@ -11,6 +11,8 @@ const client = twilio(accountSid, authToken);
 const SendSmsValidation = require("../validation/SendSmsValidation");
 const { structureResponse } = require('../utils/common.utils');
 const { InvalidPropertiesException } = require("../utils/exceptions/validation.exception")
+const shortid = require('shortid');
+
 
 class smsController {
     async sendSms(req, res) {
@@ -18,6 +20,7 @@ class smsController {
             console.log(req.body)
             let validator = new SendSmsValidation(req.body);
             validator.validate();
+            const shortId = shortid.generate();
             let createdAppointment = await Appointment.create({
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
@@ -26,6 +29,7 @@ class smsController {
                 isPaid: false,
                 phoneNo: req.body.phoneNo,
                 timestamp: new Date(),
+                shortId: shortId,
             });
             let parameters = await Parameter.findAll({
                 where: {
@@ -44,7 +48,7 @@ class smsController {
             }
             console.log("Record created with id ", createdAppointment.dataValues.id)
             const message = await client.messages.create({
-                body: "Thank you for choosing us. Please go through this link to complete payment: " + "https://getValu3.com/payment/" + createdAppointment.dataValues.id,
+                body: "Hi "+ req.body.firstName +" "+req.body.lastName+", this is a confirmation for your Valu3 appointment. Please complete the payment here: " + "https://getValu3.com/payment/" + shortId,
                 from: "+16205428380",
                 to: "+91" + req.body.phoneNo
             });

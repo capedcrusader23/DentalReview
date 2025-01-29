@@ -17,7 +17,10 @@ const Appointment = {
     },
     phoneNo:{
         type: DataTypes.STRING,
-    }
+    },
+    shortId:{
+        type:DataTypes.STRING,
+    },
 }
 
 module.exports = Appointment
