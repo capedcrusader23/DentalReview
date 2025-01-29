@@ -28,6 +28,7 @@ class paymentController {
                     shortId: req.body.appointmentId
                 }
             })
+            console.log("THIS IS APPOINTMENT",appointment)
             if (appointment == null) {
                 throw new InternalServerException("Appointment not present for this payment");
             }
