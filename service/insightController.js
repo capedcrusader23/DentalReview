@@ -46,7 +46,8 @@ class InsightController{
                         suggestivePricing: reviewInsights.dataValues.suggestivePricing,
                         optedPricing: reviewInsights.dataValues.optedPricing,
                         finalPricing: finalPricing,
-                        finalReview: finalReviw.dataValues.finalRating
+                        finalReview: finalReviw.dataValues.finalRating,
+                        createdAt: appointments[i].dataValues.createdAt,
                     }
                 }
                 console.log(responseEntity)
