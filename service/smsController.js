@@ -30,6 +30,7 @@ class smsController {
                 phoneNo: req.body.phoneNo,
                 timestamp: new Date(),
                 shortId: shortId,
+                age: req.body.age,
             });
             let parameters = await Parameter.findAll({
                 where: {

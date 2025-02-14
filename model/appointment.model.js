@@ -21,6 +21,9 @@ const Appointment = {
     shortId:{
         type:DataTypes.STRING,
     },
+    age:{
+        type:DataTypes.STRING,
+    },
 }
 
 module.exports = Appointment
