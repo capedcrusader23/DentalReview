@@ -159,7 +159,7 @@ class paymentController {
     verifySignature(paymentId, orderId, signature) {
         const crypto = require('crypto');
         const generatedSignature = crypto
-            .createHmac('sha256', 'FGn2s9FZHbXrSsc2Cjnn36uw')  // Replace with your Razorpay secret key
+            .createHmac('sha256', secret)  // Replace with your Razorpay secret key
             .update(orderId + '|' + paymentId)
             .digest('hex');
         return generatedSignature === signature;
