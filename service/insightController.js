@@ -51,8 +51,9 @@ class InsightController{
                     }
                 }
                 console.log(responseEntity)
-                
+                if(responseEntity.optedPricing != -1){
                 response.push(responseEntity)
+                }
             }
             let finalresponse = structureResponse(response, 1, "Insights Fetch successfully");
             return res.status(200).json({
